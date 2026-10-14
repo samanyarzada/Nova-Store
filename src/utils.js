@@ -25,5 +25,6 @@ export function calcTotals(items) {
 }
 
 export function gradientFor(hue) {
-  return `linear-gradient(135deg, hsl(${hue} 90% 94%), hsl(${hue + 35} 85% 82%))`;
+  // Saturation and lightness come from CSS variables, so the tiles follow the active theme
+  return `linear-gradient(135deg, hsl(${hue} var(--g-s1) var(--g-l1)), hsl(${hue + 35} var(--g-s2) var(--g-l2)))`;
 }

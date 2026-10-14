@@ -12,6 +12,7 @@ import Success from "./pages/Success.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import { products } from "./data/products.js";
 import { calcTotals } from "./utils.js";
+import useTheme from "./hooks/useTheme.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,6 +27,7 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [toast, setToast] = useState("");
   const [lastOrder, setLastOrder] = useState(null);
+  const [theme, toggleTheme] = useTheme();
 
   function showToast(message) {
     setToast(message);
@@ -73,7 +75,7 @@ export default function App() {
   return (
     <div className="app">
       <ScrollToTop />
-      <Navbar cartCount={cartCount} />
+      <Navbar cartCount={cartCount} theme={theme} onToggleTheme={toggleTheme} />
 
       <main>
         <Routes>

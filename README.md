@@ -1,96 +1,65 @@
-# 🛍️ Nova Store
+# Nova Store — a professional React project
 
-A modern and responsive e-commerce storefront built with **React** and **Vite**.
+A responsive online store that combines everything you've learned in one real project.
 
-Nova Store is designed as a frontend shopping experience where users can browse products, explore product information, and interact with a clean and responsive interface.
-
-## ✨ Features
-
-- 🛍️ Browse products
-- 🔎 Search and explore products
-- 🛒 Add products to the shopping cart
-- 📦 View product information
-- 💰 Display product prices
-- 📱 Responsive design for different screen sizes
-- 🎨 Modern and user-friendly interface
-- ⚡ Fast development and performance with Vite
-
-## 🛠️ Technologies
-
-- **React**
-- **JavaScript**
-- **Vite**
-- **CSS**
-- **ESLint**
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
+## Run it
 
 ```bash
-git clone https://github.com/samanyarzada/Nova-Store.git
-```
-
-### 2. Navigate to the project directory
-
-```bash
-cd Nova-Store
-```
-
-### 3. Install dependencies
-
-```bash
+cd nova-store
 npm install
-```
-
-### 4. Start the development server
-
-```bash
 npm run dev
 ```
 
-Open the local URL provided by Vite in your browser.
+Then open the address shown in the terminal (usually `http://localhost:5173`).
 
-## 📁 Project Structure
+## Dark mode
 
-```text
-Nova-Store/
-├── public/
-├── src/
-├── .gitignore
-├── eslint.config.js
-├── index.html
-├── package.json
-├── package-lock.json
-├── vite.config.js
-└── README.md
+Use the sun/moon button in the top-right corner of the navbar to switch themes.
+
+How it works:
+
+| Step | Where | What happens |
+|------|-------|--------------|
+| 1. Pick the starting theme | `index.html` (small inline script) | Before the page paints, it reads the saved choice from `localStorage` (`nova:theme`). If there is none, it follows the system setting (`prefers-color-scheme`). This prevents a white flash for dark-mode users. |
+| 2. Keep the theme in React state | `src/hooks/useTheme.js` | A `useState` holds `"light"` or `"dark"`. An effect writes it to `<html data-theme="...">`. |
+| 3. Remember the choice | `useTheme.js` | Clicking the button saves the choice. Until the user clicks, the site keeps following the system setting live. |
+| 4. Change the colours | `src/styles.css` | All colours are CSS variables. `:root` holds the light values and `[data-theme="dark"]` overrides them. Components never hardcode a colour, so they switch automatically. |
+| 5. Product tiles | `utils.js` (`gradientFor`) | The tile gradients use CSS variables for saturation and lightness, so they become deeper in dark mode instead of glaring. |
+
+Things to know:
+
+- `--primary-text` is a lighter indigo used for text and links in dark mode, so it stays readable on dark backgrounds. The solid `--primary` stays the same for buttons.
+- The hero, the newsletter panel and the footer are dark or coloured blocks in both themes by design.
+- `color-scheme: dark` makes native controls (select menus, checkboxes, scrollbars) dark too.
+- The theme change animates for about 0.3 seconds. This is switched off for people who prefer reduced motion.
+
+To add a new colour that changes with the theme, define it once in `:root` and again in `[data-theme="dark"]`, then use `var(--your-token)` in your CSS.
+
+## Topics used, and where
+
+| Topic | Where it's used |
+|-------|-----------------|
+| **useState** | Cart and toast message in `App.jsx`; search and sorting in `Products.jsx`; quantity in `ProductDetail.jsx`; mobile menu in `Navbar.jsx`; light/dark theme in `hooks/useTheme.js` |
+| **props** | `ProductCard`, `Rating`, `Field`, `OrderSummary`, plus passing handlers (`onAdd`, `onRemove`, `onUpdateQty`) from `App` down to the pages |
+| **routing** | `/`, `/products`, `/products/:id`, `/cart`, `/checkout`, `/success` and a 404 page, using `NavLink`, `useParams`, `useNavigate`, `useSearchParams` and `Navigate` |
+| **form validation** | `Checkout.jsx` (name, phone, email, city, state, ZIP, address, terms) and the newsletter form in `Home.jsx` |
+
+## Folder structure
+
+```
+src/
+  App.jsx            main state + routes
+  styles.css         all styling (light and dark design tokens)
+  hooks/useTheme.js  dark mode state and persistence
+  utils.js           price formatting, totals, helpers
+  data/products.js   product data
+  components/        Navbar, Footer, ProductCard, Rating, Field, OrderSummary, Toast
+  pages/             Home, Products, ProductDetail, Cart, Checkout, Success, NotFound
 ```
 
-## 🎯 Project Purpose
+## Ideas to practice
 
-The goal of Nova Store is to practice modern **React frontend development** by building a realistic e-commerce interface.
-
-The project focuses on component-based architecture, user interaction, state management, responsive design, and creating a smooth shopping experience.
-
-## 🔮 Future Improvements
-
-- Add product categories
-- Add advanced filtering and sorting
-- Add product details pages
-- Add wishlist functionality
-- Add user authentication
-- Add checkout and payment flow
-- Add persistent shopping cart
-- Connect to a real product API
-- Add loading and error states
-- Add dark mode
-
-## 👨‍💻 Author
-
-**Saman Yarzada**
-
-GitHub: [@samanyarzada](https://github.com/samanyarzada)
-
-## 📄 License
-
-This project is open source and available for learning and personal use.
+1. Save the cart in `localStorage` with `useEffect`.
+2. Add login and sign-up pages (forms + validation).
+3. Add a price-range slider to the products page.
+4. Build a wishlist.
